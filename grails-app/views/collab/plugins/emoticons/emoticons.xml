@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<plugins>
+    <plugin>
+        <name>MSN Messenger 6.0</name>
+        <description>All emoticons of MSN Messenger 6.0</description>
+        <version>msn</version>
+        <min_jeti_version>msn_messenger-6.0.zip</min_jeti_version>
+    </plugin>
+    <plugin>
+        <name>AIM</name>
+        <description>AIM iconset</description>
+        <version>aim</version>
+        <min_jeti_version>AIM.jisp</min_jeti_version>
+    </plugin>
+    <plugin>
+        <name>Yahoo! Messenger</name>
+        <description>Default set of icons in Yahoo! Messenger.</description>
+        <version>yahoo</version>
+        <min_jeti_version>yahoo_messenger.jisp</min_jeti_version>
+    </plugin>
+    <plugin>
+        <name>ICQ</name>
+        <description>Default icons in ICQ Instant Messenger</description>
+        <version>icq</version>
+        <min_jeti_version>ICQ.jisp</min_jeti_version>
+    </plugin>
+    <plugin>
+        <name>Jabber Jeti/2</name>
+        <description>Iconsset for JaJc. Jeti and Jeti/2 default</description>
+        <version>jabber</version>
+        <min_jeti_version>jabber-jeti.jisp</min_jeti_version>
+    </plugin>
+</plugins>

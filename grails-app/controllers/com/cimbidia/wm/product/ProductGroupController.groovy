@@ -1,0 +1,298 @@
+/**
+* Copyright (c) Cimbidia.  All rights reserved.
+* The use and distribution terms for this software are covered by the
+* Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+* which can be found in the file epl-v10.html at the root of this distribution.
+* By using this software in any fashion, you are agreeing to be bound by
+* the terms of this license.
+* You must not remove this notice, or any other, from this software.
+**/ 
+package com.cimbidia.wm.product
+
+import com.cimbidia.wm.product.Product;
+import com.cimbidia.wm.product.ProductGroup;
+
+class ProductGroupController {
+
+    //static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+
+	def productService 
+	
+    def index = {
+        redirect(action: "list", params: params)
+    }
+
+    def list = {
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        [productGroupInstanceList: ProductGroup.list(params), productGroupInstanceTotal: ProductGroup.count()]
+    }
+
+    def create = {
+        def productGroupInstance = new ProductGroup()
+        productGroupInstance.properties = params
+        return [productGroupInstance: productGroupInstance]
+    }
+
+    def save = {
+		println "Save " + params
+		def productGroupInstance = ProductGroup.get(params.id)
+		if (!productGroupInstance) { 
+			productGroupInstance = new ProductGroup(params)
+		}
+		//productGroupInstance.products = productService.getProducts(params['product.id'])
+		def products = productService.getProducts(params['product.id'])		
+		products.each { product ->
+			productGroupInstance.addToProducts(product)
+        }
+		
+		if (productGroupInstance.save(flush: true)) {
+            flash.message = "${warehouse.message(code: 'default.created.message', args: [warehouse.message(code: 'productGroup.label', default: 'ProductGroup'), productGroupInstance.id])}"
+            redirect(action: "edit", id: productGroupInstance.id)
+        }
+        else {
+            render(view: "create", model: [productGroupInstance: productGroupInstance])
+        }
+    }
+
+    def show = {
+        def productGroupInstance = ProductGroup.get(params.id)
+        if (!productGroupInstance) {
+            flash.message = "${warehouse.message(code: 'default.not.found.message', args: [warehouse.message(code: 'productGroup.label', default: 'ProductGroup'), params.id])}"
+            redirect(action: "list")
+        }
+        else {
+            [productGroupInstance: productGroupInstance]
+        }
+    }
+
+    def edit = {
+		log.info "Edit product group: " + params
+		
+        def productGroupInstance = ProductGroup.get(params.id)
+        if (!productGroupInstance) {
+            flash.message = "${warehouse.message(code: 'default.not.found.message', args: [warehouse.message(code: 'productGroup.label', default: 'ProductGroup'), params.id])}"
+            redirect(action: "list")
+        }
+        else {
+			productGroupInstance.properties = params
+			log.info "category: " + productGroupInstance?.category?.name
+            return [productGroupInstance: productGroupInstance]
+        }
+    }
+
+	def addProducts = { 
+	
+		def productGroupInstance = ProductGroup.get(params.id)
+		if (productGroupInstance) {
+			if (params.version) {
+				def version = params.version.toLong()
+				if (productGroupInstance.version > version) {
+					
+					productGroupInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [warehouse.message(code: 'productGroup.label', default: 'ProductGroup')] as Object[], "Another user has updated this ProductGroup while you were editing")
+					render(view: "edit", model: [productGroupInstance: productGroupInstance])
+					return
+				}
+			}
+			productGroupInstance.properties = params
+			
+			log.info("Products to add " + params['product.id'])
+			
+			log.info("Products before " + productGroupInstance.products)
+			
+			def products = productService.getProducts(params['product.id'])
+			println "Products: " + products
+			products.each { product ->
+				productGroupInstance.addToProducts(product)
+			}
+
+			log.info("Products after " + productGroupInstance.products)
+			
+			if (!productGroupInstance.hasErrors() && productGroupInstance.save(flush: true)) {
+				flash.message = "${warehouse.message(code: 'default.updated.message', args: [warehouse.message(code: 'productGroup.label', default: 'ProductGroup'), productGroupInstance.id])}"
+				redirect(action: "edit", id: productGroupInstance.id)
+			}
+			else {
+				render(view: "edit", model: [productGroupInstance: productGroupInstance])
+			}
+		}
+		else {
+			flash.message = "${warehouse.message(code: 'default.not.found.message', args: [warehouse.message(code: 'productGroup.label', default: 'ProductGroup'), params.id])}"
+			redirect(action: "list")
+		}
+			
+	}
+	
+    def update = {
+		
+		log.info "Update product group " + params 
+		
+		
+        def productGroupInstance = ProductGroup.get(params.id)
+        if (productGroupInstance) {
+            if (params.version) {
+                def version = params.version.toLong()
+                if (productGroupInstance.version > version) {
+                    
+                    productGroupInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [warehouse.message(code: 'productGroup.label', default: 'ProductGroup')] as Object[], "Another user has updated this ProductGroup while you were editing")
+                    render(view: "edit", model: [productGroupInstance: productGroupInstance])
+                    return
+                }
+            }
+			productGroupInstance.properties = params
+			
+			// The user changed the category, so we want to redisplay the form with no products
+			//if (params?.oldCategory?.id != productGroupInstance?.category?.id) {
+				//productGroupInstance.products = []
+			//	render(view: "edit", model: [productGroupInstance: productGroupInstance])
+			//	return
+			//}
+			
+			//productGroupInstance.products = productService.getProducts(params['product.id'])
+			/*
+			def products = productService.getProducts(params['product.id'])
+			println "Products: " + products
+			products.each { product ->
+				productGroupInstance.addToProducts(product)
+			}*/
+			
+            if (!productGroupInstance.hasErrors() && productGroupInstance.save(flush: true)) {
+                flash.message = "${warehouse.message(code: 'default.updated.message', args: [warehouse.message(code: 'productGroup.label', default: 'ProductGroup'), productGroupInstance.id])}"
+                //redirect(action: "edit", id: productGroupInstance.id)
+				//redirect(controller: "inventory", action: "browse")
+                redirect(controller:"productGroup", action:"list")
+            }
+            else {
+                println productGroupInstance.errors
+                render(view: "edit", model: [productGroupInstance: productGroupInstance])
+            }
+        }
+        else {
+            flash.message = "${warehouse.message(code: 'default.not.found.message', args: [warehouse.message(code: 'productGroup.label', default: 'ProductGroup'), params.id])}"
+            //redirect(controller: "inventory", action: "browse")
+            redirect(controller:"productGroup", action:"list")
+        }
+    }
+
+    def delete = {
+        def productGroupInstance = ProductGroup.get(params.id)
+        if (productGroupInstance) {
+            try {
+				// Remove all products from the product group before deleting the product group 
+				productGroupInstance.products.each { product ->
+					productGroupInstance.removeFromProducts(product)
+				}
+                productGroupInstance.delete(flush: true)
+                flash.message = "${warehouse.message(code: 'default.deleted.message', args: [warehouse.message(code: 'productGroup.label', default: 'ProductGroup'), params.id])}"
+                redirect(action: "list")
+            }
+            catch (org.springframework.dao.DataIntegrityViolationException e) {
+                flash.message = "${warehouse.message(code: 'default.not.deleted.message', args: [warehouse.message(code: 'productGroup.label', default: 'ProductGroup'), params.id])}"
+                redirect(action: "list", id: params.id)
+            }
+        }
+        else {
+            flash.message = "${warehouse.message(code: 'default.not.found.message', args: [warehouse.message(code: 'productGroup.label', default: 'ProductGroup'), params.id])}"
+            redirect(action: "list")
+        }
+    }
+	
+	/**
+	 * From the inventory browser.
+	 */
+	def addToProductGroup = { 
+		def productGroupInstance = new ProductGroup()
+		productGroupInstance.properties = params
+		productGroupInstance.products = productService.getProducts(params['product.id'])
+		
+		
+		def categories = productGroupInstance.products.collect { 
+			it.category
+		}
+		
+		categories = categories.unique();
+	
+		if (categories.size() > 1) { 
+			//throw new Exception("Product group must contain products from a single category")
+			productGroupInstance.errors.rejectValue("category", "Product group must contain products from a single category")			
+			flash.message = "Please return to the <a href='javascript:history.go(-1)'>Inventory Browser</a> to choose products from a single category."
+		}
+		productGroupInstance.category = categories.get(0)
+		
+		def productGroups = ProductGroup.findAllByCategory(productGroupInstance.category)
+		
+		render(view: "create", model: [productGroupInstance: productGroupInstance, productGroups : productGroups])
+	}
+	
+	/**
+	 * From the edit produt group page.
+	 */
+	
+	def removeProductsFromProductGroup = { 
+		println params
+		
+		def productGroupInstance = ProductGroup.get(params.id)
+		def products = productService.getProducts(params['delete-product.id'])
+		products.each { product ->
+			productGroupInstance.removeFromProducts(product)
+		}
+		
+		render(view: "edit", model: [productGroupInstance: productGroupInstance])
+	}
+	def addProductsToProductGroup = {
+		println params
+		
+		def productGroupInstance = ProductGroup.get(params.id)
+		def products = productService.getProducts(params['add-product.id'])
+		products.each { product ->
+			productGroupInstance.addToProducts(product)
+		}
+		
+		render(view: "edit", model: [productGroupInstance: productGroupInstance])
+	}
+
+
+    /**
+     * Add a product group to existing product
+     *
+     * @return
+     */
+    def addProductToProductGroup = {
+        println "addProductToProductGroup() " + params
+        def productGroup = ProductGroup.get(params.id)
+        if (productGroup) {
+            def product = Product.get(params.product.id)
+            if (product) {
+                productGroup.addToProducts(product)
+                productGroup.save()
+            }
+            //def productGroup = ProductGroup.findByDescription(params.productGroup)
+            //if (!productGroup) {
+            //    productGroup = new ProductGroup(description: params.productGroup, category: product.category)
+            //}
+            //product.addToProductGroups(productGroup)
+            //product.save(failOnError: true)
+        }
+        render(template:'products', model:[productGroup: productGroup, products:productGroup.products])
+    }
+
+    /**
+     * Delete product group from database
+     */
+    def deleteProductFromProductGroup = {
+        println "deleteProductFromProductGroup() " + params
+        /*
+        def product = Product.get(params.productId)
+        if (product) {
+            def productGroup = ProductGroup.get(params.id)
+            product.removeFromProductGroups(productGroup)
+            productGroup.delete()
+            product.save(flush:true)
+        }
+        else {
+            response.status = 404
+        }
+        */
+        render(template:'products', model:[productGroup: productGroup, products:productGroup.products])
+    }
+
+}

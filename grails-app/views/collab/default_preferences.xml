@@ -1,0 +1,79 @@
+<?xml version='1.0'?>
+<preferences>
+    <preference key="metaltheme.color6" value="-1"/>
+    <preference key="metaltheme.color5" value="-14712868"/>
+    <preference key="windowsutils.alpha" value="70"/>
+    <preference key="groupchat.chatHeigth" value="460"/>
+    <preference key="metaltheme.color4" value="-6316129"/>
+    <preference key="metaltheme.color3" value="-9474193"/>
+    <preference key="jeti.showRealNick" value="false"/>
+    <preference key="metaltheme.color2" value="-16737793"/>
+    <preference key="sound.message.enabled" value="true"/>
+    <preference key="metaltheme.color1" value="-3088897"/>
+    <preference key="metaltheme.color0" value="-16764007"/>
+    <preference key="groupchat.chatWidth" value="590"/>
+    <preference key="titlescroller.scrolltime" value="7777"/>
+    <preference key="jeti.dividerLocation" value="338"/>
+    <preference key="xhtml.foreground" value="-16777216"/>
+    <preference key="sound.block" value="2"/>
+    <preference key="jeti.beep" value="true"/>
+    <preference key="jeti.statusLinked" value="true"/>
+    <preference key="sound.online.enabled" value="true"/>
+    <preference key="jeti.height" value="457"/>
+    <preference key="jeti.javadecorations" value="false"/>
+    <preference key="alertwindow.foregroundcolor" value="-16777216"/>
+    <preference key="jeti.chatHeight" value="350"/>
+    <preference key="alertwindow.popuptime" value="4"/>
+    <preference key="sound.offline.enabled" value="true"/>
+    <preference key="alertwindow.backgroundcolor" value="-31"/>
+    <preference key="jeti.showNotInTaskbar" value="false"/>
+    <preference key="jeti.chatWidth" value="300"/>
+    <preference key="groupchat.showPresence" value="true"/>
+    <preference key="filetransfer.closeOnComplete" value="false"/>
+    <preference key="jeti.showoffline" value="true"/>
+    <preference key="jeti.width" value="112"/>
+    <preference key="jeti.posY" value="231"/>
+    <preference key="jeti.posX" value="831"/>
+    <preference key="titlescroller.scrollspeed" value="200"/>
+    <preference key="sound.own_online.enabled" value="true"/>
+    <preference key="jeti.tabs" value="false"/>
+    <preference key="alertwindow.alpha" value="100"/>
+    <preference key="jeti.chatPosY" value="411"/>
+    <preference key="jeti.chatPosX" value="298"/>
+    <preference key="groupchat.chatPosY" value="275"/>
+    <preference key="groupchat.chatPosX" value="128"/>
+    <preference key="filetransfer.useLocalIP" value="true"/>
+    <preference key="jeti.enterSends" value="true"/>
+    <preference key="jeti.chatDivider" value="166"/>
+    <preference key="sound.own_offline.enabled" value="true"/>
+    <preference key="jeti.showTimestamp" value="true"/>
+    <preference key="jeti.menutop" value="false"/>
+    <preference key="jeti.toFrontOnNewMessage" value="false"/>
+    <preference key="jeti.bmw" value="false"/>
+    <preference key="groupchat.chatDivider" value="217"/>
+    <preference key="groupchat.divider" value="460"/>
+    <preference key="metaltheme.color7" value="-16777216"/>
+    <plugins>
+        <plugin type="rostericons" name="Crystal (MSN)" enabled="false" transport="msn"/>
+        <plugin type="rostericons" name="ICQ" enabled="false" transport="icq"/>
+        <plugin type="rostericons" name="MSN" enabled="false" transport="msn"/>
+        <plugin type="rostericons" name="Crystal (ICQ)" enabled="false" transport="icq"/>
+        <plugin type="emoticons" name="MSN Messenger 6.0" enabled="true" transport="msn"/>
+        <plugin type="emoticons" name="AIM" enabled="false" transport="aim"/>
+        <plugin type="emoticons" name="Yahoo! Messenger" enabled="false" transport="yahoo"/>
+        <plugin type="emoticons" name="ICQ" enabled="false" transport="icq"/>
+        <plugin type="emoticons" name="Jabber Jeti/2" enabled="false" transport="default"/>
+        <plugin type="plugins" name="emoticons" enabled="true" transport="1.8"/>
+        <plugin type="plugins" name="groupchat" enabled="true" transport="0.2"/>
+        <plugin type="plugins" name="xhtml" enabled="true" transport="0.3"/>
+        <plugin type="plugins" name="metaltheme" enabled="false" transport="0.1"/>
+        <plugin type="plugins" name="filetransfer" enabled="false" transport="0.1"/>
+        <plugin type="plugins" name="keyboardflash" enabled="false" transport="0.2"/>
+        <plugin type="plugins" name="links" enabled="true" transport="0.1"/>
+        <plugin type="plugins" name="lookandfeel" enabled="false" transport="0.1"/>
+        <plugin type="plugins" name="sound" enabled="false" transport="0.1"/>
+        <plugin type="plugins" name="titlescroller" enabled="false" transport="0.1"/>
+        <plugin type="plugins" name="vcard" enabled="false" transport="0.1"/>
+        <plugin type="plugins" name="alertwindow" enabled="true" transport="2"/>
+    </plugins>
+</preferences>

@@ -1,0 +1,107 @@
+
+<%@ page import="com.cimbidia.wm.core.Blog" %>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="layout" content="custom" />
+        <g:set var="entityName" value="${warehouse.message(code: 'blog.label', default: 'Blog')}" />
+        <title><warehouse:message code="default.show.label" args="[entityName]" /></title>
+        <!-- Specify content to overload like global navigation links, page titles, etc. -->
+		<content tag="pageTitle"><warehouse:message code="default.show.label" args="[entityName]" /></content>
+    </head>
+    <body>
+        <div class="boostrap">
+            <g:if test="${flash.message}">
+	            <div class="message">${flash.message}</div>
+            </g:if>
+            
+         <g:each var="blogInstance" in="${blogs}">
+
+           <div class="panel panel-info col-md-12" style="padding: 0px">
+           	<div class="panel-heading">
+	   		 <h3 class="panel-title">${blogInstance.name}&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://placehold.it/40/FA6F57/fff&text=${blogInstance?.comments?.size()}"></img></h3>   
+	   		 
+	        </div>
+		
+	        <div class="panel-body col-md-8" style="height: auto">
+			    <ul class="chat">
+			    <g:if test="${blogInstance?.comments}">
+			    <g:each var="commentInstance" in="${blogInstance?.comments}">
+	
+				<li class="left clearfix">
+				<span class="chat-img pull-left">
+					<g:if test="${commentInstance.sender?.photo}">
+					    <img src="data:image/png;base64,${commentInstance.sender?.photo?.encodeBase64()}" alt="User Avatar" class="img-circle" />
+					</g:if>
+					<g:else>
+								    <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
+					</g:else>
+				</span>
+				    <div class="chat-body clearfix">
+					<div class="header">
+					    <strong class="primary-font">${commentInstance?.sender}</strong> <small class="pull-right text-muted">
+						<span class="glyphicon glyphicon-time">&nbsp;</span><g:prettyDateFormat date="${commentInstance?.lastUpdated}"/></small>
+					</div>
+					<div><pre>${commentInstance?.comment?.encodeAsHTML().replaceAll('\n','<br>') }</pre></div>
+					<span class="small text-muted"></span>
+				    </div>
+				</li>
+			    </g:each>
+			    </g:if>
+			    <g:else>
+					<span class="fade"><warehouse:message code="default.noComments.label" /></span>
+			    </g:else>
+			    </ul>
+	         </div>
+		
+	         <div class="panel-footer  col-md-4">
+		   <div class="panel panel-primary">
+		   <div class="panel-body col-md-12" style="height:auto" >
+	           <g:form action="saveComment">
+			<g:hiddenField name="id" value="${commentInstance?.id}" />
+			<g:hiddenField name="blog.id" value="${blogInstance?.id}" />
+		
+		    <div class="input-group">
+			<textarea rows=5 name="comment" id="comment" type="text" class="form-control input-sm" placeholder="Type your message here..." ></textarea>
+			<span style="padding:5px" class="input-group-btn">
+			    <button type="submit" class="btn btn-warning btn-sm" id="btn-chat">
+				Send</button>
+			</span>
+		    </div>
+		 
+		   </g:form>
+		   </div>
+		   <div class="panel-body col-md-12" >
+		   <h4>Followers</h4>
+
+		   <ul style="margin: 0;  padding: 0;  background-color: #ddd;">
+		    <g:each var="followerInstance" in="${blogInstance?.followers}">
+					<g:if test="${followerInstance?.photo}">
+					    <li style="display: inline;  float: left; width: 100px;  height: 100px;">
+					    
+						    <ol>
+						    <li style="display:block; padding: 5px; "><img src="data:image/png;base64,${followerInstance?.photo?.encodeBase64()}" alt="User Avatar" class="img-circle"/></li>
+						    <li style="display:block; padding: 5px; ">${followerInstance?.name}</li>
+						    </ol>
+					    </li>
+					</g:if>
+					<g:else>
+					    <li style="display: inline;  float: left; width: 100px;  height: 100px;">
+						    <ol>
+						    <li style="display:block; padding: 5px; "><img src="http://placehold.it/50/FA6F57/fff&text=NoPic" alt="User Avatar" class="img-circle"/></li>
+						    <li style="display:block; padding: 5px; ">${followerInstance?.name}</li>
+						    </ol>
+					    </li>
+					</g:else>
+		    </g:each>
+		    </ul>
+		    </div>
+		   </div>
+		   
+	        </div>
+	</div>
+	 </g:each>
+		    
+	    </div>
+    </body>
+</html>

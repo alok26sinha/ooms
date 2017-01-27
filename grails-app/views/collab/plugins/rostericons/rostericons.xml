@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<plugins>
+    <plugin>
+        <name>Crystal (MSN)</name>
+        <description>Crystal MSN Iconset</description>
+        <version>msn</version>
+        <min_jeti_version>crystal_msn.jisp</min_jeti_version>
+    </plugin>
+    <plugin>
+        <name>ICQ</name>
+        <description>Default ICQ iconset</description>
+        <version>icq</version>
+        <min_jeti_version>icq.jisp</min_jeti_version>
+    </plugin>
+    <plugin>
+        <name>MSN</name>
+        <description>Default MSN messenger iconset</description>
+        <version>msn</version>
+        <min_jeti_version>msn.jisp</min_jeti_version>
+    </plugin>
+    <plugin>
+        <name>Crystal (ICQ)</name>
+        <description>Crystal ICQ Iconset</description>
+        <version>icq</version>
+        <min_jeti_version>crystal_icq.jisp</min_jeti_version>
+    </plugin>
+</plugins>

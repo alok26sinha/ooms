@@ -1,0 +1,198 @@
+/**
+* Copyright (c) Cimbidia.  All rights reserved.
+* The use and distribution terms for this software are covered by the
+* Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+* which can be found in the file epl-v10.html at the root of this distribution.
+* By using this software in any fashion, you are agreeing to be bound by
+* the terms of this license.
+* You must not remove this notice, or any other, from this software.
+**/ 
+package com.cimbidia.wm.reporting
+
+
+import com.cimbidia.wm.report.ChecklistReportCommand
+import com.cimbidia.wm.report.InventoryReportCommand
+import com.cimbidia.wm.report.ProductReportCommand
+
+import com.cimbidia.wm.core.Location;
+
+class ReportController {
+	
+	def documentService
+	//def inventoryService
+	def productService
+	def reportService
+
+    /*def showInventorySamplingReport = {
+
+        def howMany = (params.n?:10).toInteger()
+        def location = Location.get(session.warehouse.id)
+        def inventoryItems = inventoryService.getInventorySampling(location, howMany);
+
+        def sw = new StringWriter()
+        if (inventoryItems) {
+
+            println inventoryItems
+            //sw.append(csvrows[0].keySet().join(",")).append("\n")
+            sw.append("Product Code").append(",")
+            sw.append("Product").append(",")
+            sw.append("Lot number").append(",")
+            sw.append("Expiration date").append(",")
+            sw.append("Bin location").append(",")
+            sw.append("On hand quantity").append(",")
+            sw.append("\n")
+            inventoryItems.each { inventoryItem ->
+                if (inventoryItem) {
+                    def inventoryLevel = inventoryItem?.product?.getInventoryLevel(location.id)
+                    sw.append('"' + (inventoryItem?.product?.productCode?:"").toString()?.replace('"','""') + '"').append(",")
+                    sw.append('"' + (inventoryItem?.product?.name?:"").toString()?.replace('"','""') + '"').append(",")
+                    sw.append('"' + (inventoryItem?.lotNumber?:"").toString()?.replace('"','""') + '"').append(",")
+                    sw.append('"' + inventoryItem?.expirationDate.toString()?.replace('"','""') + '"').append(",")
+                    sw.append('"' + (inventoryLevel?.binLocation?:"")?.toString()?.replace('"','""') + '"').append(",")
+                    sw.append("\n")
+                }
+            }
+        }
+
+        //render sw.toString()
+
+        response.setHeader("Content-disposition", "attachment; filename='Inventory-sampling-${new Date().format("yyyyMMdd-hhmmss")}.csv'")
+        render(contentType:"text/csv", text: sw.toString(), encoding:"UTF-8")
+
+    }*/
+
+
+
+    /*def showConsumptionReport = {
+
+        def transactions = Transaction.findAllByTransactionDateBetween(new Date()-10, new Date())
+
+        [transactions: transactions]
+    }*/
+
+
+	def showProductReport = { ProductReportCommand command -> 	
+		
+		//if (!command?.product) { 
+		//	throw new Exception("Unable to locate product " + params?.product?.id)
+		//}
+		
+		if (!command?.hasErrors()) {			
+			reportService.generateProductReport(command)
+		}
+						
+		[command : command]
+		
+		
+	}
+	
+	
+	def showTransactionReport = { 
+		
+		InventoryReportCommand command = new InventoryReportCommand();
+		command.rootCategory = productService.getRootCategory();
+		
+		
+		[command : command ]
+	}
+	
+	
+	/*def generateTransactionReport = { InventoryReportCommand command -> 
+		// We always need to initialize the root category 
+		command.rootCategory = productService.getRootCategory();
+		if (!command?.hasErrors()) { 			
+			reportService.generateTransactionReport(command);			
+		}
+		render(view: 'showTransactionReport', model: [command : command])
+	}*/
+	
+	def showShippingReport = { ChecklistReportCommand command ->
+		command.rootCategory = productService.getRootCategory();
+		if (!command?.hasErrors()) {
+			reportService.generateShippingReport(command);
+		}
+		[command : command]
+	}
+	
+	def showPaginatedPackingListReport = { ChecklistReportCommand command ->
+		command.rootCategory = productService.getRootCategory();
+		if (!command?.hasErrors()) {
+			reportService.generateShippingReport(command);
+		}
+		[command : command]
+	}	
+	
+	def printShippingReport = { ChecklistReportCommand command ->
+		command.rootCategory = productService.getRootCategory();
+		if (!command?.hasErrors()) {
+			reportService.generateShippingReport(command);
+		}
+		[command : command]
+	}
+	
+	def printPaginatedPackingListReport = { ChecklistReportCommand command ->
+		try {
+			command.rootCategory = productService.getRootCategory();
+			if (!command?.hasErrors()) {
+				reportService.generateShippingReport(command);
+			}
+		} catch (Exception e) {
+			log.error("error", e)
+			e.printStackTrace()
+		}
+		[command : command]
+	}
+	
+
+	def downloadTransactionReport = {		
+		def baseUri = request.scheme + "://" + request.serverName + ":" + request.serverPort
+
+		// JSESSIONID is required because otherwise the login page is rendered
+		def url = baseUri + params.url + ";jsessionid=" + session.getId()		
+		url += "?print=true" 
+		url += "&location.id=" + params.location.id
+		url += "&category.id=" + params.category.id
+		url += "&startDate=" + params.startDate
+		url += "&endDate=" + params.endDate
+		url += "&showTransferBreakdown=" + params.showTransferBreakdown
+		url += "&hideInactiveProducts=" + params.hideInactiveProducts
+		url += "&insertPageBreakBetweenCategories=" + params.insertPageBreakBetweenCategories
+		url += "&includeChildren=" + params.includeChildren
+		url += "&includeEntities=true" 
+
+		// Let the browser know what content type to expect
+		//response.setHeader("Content-disposition", "attachment;") // removed filename=
+		response.setContentType("application/pdf")
+
+		// Render pdf to the response output stream
+		log.info "BaseUri is $baseUri"	
+		log.info("Session ID: " + session.id)
+		log.info "Fetching url $url"
+		reportService.generatePdf(url, response.getOutputStream())
+	}
+	
+	def downloadShippingReport = {		
+		if (params.format == 'docx') { 
+			def tempFile = documentService.generateChecklistAsDocx()
+	//		def filename = "shipment-checklist.docx"
+			//response.setHeader("Content-disposition", "attachment; filename=" + filename);
+			response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+			response.outputStream << tempFile.readBytes()
+		} 
+		else if (params.format == 'pdf') { 
+			def baseUri = request.scheme + "://" + request.serverName + ":" + request.serverPort
+			def url = baseUri + params.url + ";jsessionid=" + session.getId()
+			url += "?print=true&orientation=portrait"
+			url += "&shipment.id=" + params.shipment.id
+			url += "&includeEntities=true" 
+			log.info "Fetching url $url"	
+			response.setContentType("application/pdf")
+			//response.setHeader("Content-disposition", "attachment;") // removed filename=	
+			reportService.generatePdf(url, response.getOutputStream())
+		}
+		else { 
+			throw new UnsupportedOperationException("Format '${params.format}' not supported")
+		}
+	}
+
+}

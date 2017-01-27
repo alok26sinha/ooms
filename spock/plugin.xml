@@ -1,0 +1,9 @@
+<plugin name='spock' version='0.6' grailsVersion='2.3.4 &gt; *'>
+  <author>Spock Framework</author>
+  <authorEmail>user@forum.spockframework.org</authorEmail>
+  <title>Spock Plugin - spockframework.org</title>
+  <description>Test your Grails apps with Spock</description>
+  <documentation>http://grails.org/plugin/spock</documentation>
+  <type>SpockGrailsPlugin</type>
+  <resources />
+</plugin>

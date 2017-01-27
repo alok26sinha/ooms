@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<plugins>
+    <plugin>
+        <name>alertwindow</name>
+        <description>alertwindow.Shows_an_alert_window_when_a_message_arrives</description>
+        <version>2</version>
+        <min_jeti_version>0.5.3</min_jeti_version>
+        <parent>Notifiers</parent>
+    </plugin>
+    <plugin>
+        <name>emoticons</name>
+        <description>emoticons.Shows_graphical_emoticons</description>
+        <version>1.8</version>
+        <min_jeti_version>0.5.3</min_jeti_version>
+        
+    </plugin>
+    <plugin>
+        <name>filetransfer</name>
+        <description>filetransfer.File_Transfer</description>
+        <version>0.1</version>
+        <min_jeti_version>0.6.1</min_jeti_version>
+        
+    </plugin>
+    <plugin>
+        <name>groupchat</name>
+        <description>groupchat.groupchat</description>
+        <version>0.2</version>
+        <min_jeti_version>0.5.1</min_jeti_version>
+        
+    </plugin>
+    <plugin>
+        <name>keyboardflash</name>
+        <description>keyboardflash.Flashes_the_scrollock_led_on_new_message</description>
+        <version>0.2</version>
+        <min_jeti_version>0.5</min_jeti_version>
+        <parent>Notifiers</parent>
+    </plugin>
+    <plugin>
+        <name>links</name>
+        <description>links.Make_hyperlinks_clickable</description>
+        <version>0.1</version>
+        <min_jeti_version>0.5.3</min_jeti_version>
+        
+    </plugin>
+    <plugin>
+        <name>metaltheme</name>
+        <description>metaltheme.Change_Colors</description>
+        <version>0.1</version>
+        <min_jeti_version>0.5</min_jeti_version>
+        <parent>Skins</parent>
+    </plugin>
+    <plugin>
+        <name>sound</name>
+        <description>sound.Plays_a_sound_on_new_message_or_person_available</description>
+        <version>0.1</version>
+        <min_jeti_version>0.5.1</min_jeti_version>
+        <parent>Notifiers</parent>
+    </plugin>
+    <plugin>
+        <name>titlescroller</name>
+        <description>titlescroller.Scrolls_the_window_title_of_chat_windows_on_new_messages</description>
+        <version>0.1</version>
+        <min_jeti_version>0.5.3</min_jeti_version>
+        <parent>Notifiers</parent>
+    </plugin>
+    <plugin>
+        <name>vcard</name>
+        <description>vcard.shows_contact_details</description>
+        <version>0.1</version>
+        <min_jeti_version>0.6</min_jeti_version>
+        
+    </plugin>
+    <plugin>
+        <name>xhtml</name>
+        <description>xhtml.Formats_messages</description>
+        <version>0.3</version>
+        <min_jeti_version>0.5</min_jeti_version>
+        
+    </plugin>
+    <plugin>
+        <name>search</name>
+        <description>search.Search_a_user_on_a_Jabber_Server</description>
+        <version>0.2</version>
+        <min_jeti_version>0.5.1</min_jeti_version>
+        
+    </plugin>
+</plugins>

@@ -1,0 +1,135 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="layout" content="custom" />
+<title><warehouse:message code="order.enterOrderDetails.label"/></title>
+</head>
+<body>
+<div class="boostrap">
+	<div class="nav">
+		<span class="linkButton"><a href="${createLinkTo(dir:'')}"><warehouse:message code="default.home.label"/></a>
+		</span>
+	</div>
+	<div class="body">
+		<g:if test="${flash.message}">
+			<div class="message">
+				${flash.message}
+			</div>
+		</g:if>
+		<g:hasErrors bean="${order}">
+			<div class="errors">
+				<g:renderErrors bean="${order}" as="list" />
+			</div>
+		</g:hasErrors>
+		<g:each var="orderItem" in="${orderItems}" status="i">
+			<g:hasErrors bean="${orderItem}">
+				<div class="errors">
+					<g:renderErrors bean="${orderItem}" as="list" />
+				</div>
+			</g:hasErrors>
+		</g:each>
+		<g:form role="form" action="purchaseOrder" method="post">
+			<div class="dialog">
+			
+				<fieldset>
+            		<g:render template="/order/summary" model="[orderInstance:order]"/>
+			
+					<table class="table">
+						<tbody>
+						<div class="col-lg-2">
+							<tr class='prop'>
+								<td valign='top' class='name'><label for='description'><warehouse:message code="default.description.label"/>:</label>
+								</td>
+								<td valign='top' class='value ${hasErrors(bean:order,field:'description','errors')}'>
+								<div class="col-lg-6">
+									<input class="form-control" type="text" name='description' value="${order?.description?.encodeAsHTML()}" size="60" class="text"/>
+								</div>
+								</td>
+							</tr>
+							<tr class='prop'>
+								<td valign='top' class='name'><label for='source'><warehouse:message code="order.orderFrom.label"/>:</label>
+								</td>
+								<td valign='top' class='value ${hasErrors(bean:order,field:'origin','errors')}'>
+									<%-- 
+									<g:if test="${suppliers }">
+										<g:select name="origin.id" from="${suppliers?.sort()}" optionKey="id" value="${order?.origin?.id}" noSelection="['':'']"/>
+									</g:if>
+									<g:else>
+										<span class="fade"><warehouse:message code="order.thereAreNoSuppliers.label"/></span> 
+									</g:else>
+									--%>
+									<div class="col-lg-4">
+									<g:selectOrderSupplier name="origin.id" 
+										class="form-control" optionKey="id" value="${order?.origin?.id}" noSelection="['null':'']"/>
+									</div>
+								</td>
+							</tr>
+							<tr class='prop'>
+								<td valign='top' class='name'><label for="destination"><warehouse:message code="order.orderFor.label"/>:</label>
+								</td>
+								<td valign='top' class='value ${hasErrors(bean:order,field:'destination','errors')}'>
+									
+									<div class="col-lg-4">
+									<g:selectDepot name="destination.id" 
+										class="form-control" optionKey="id" class="form-control" value="${order?.destination?.id}" noSelection="['null':'']"/>
+									</div>
+									
+								</td>
+							</tr>
+							<tr class='prop'>
+								<td valign='top' class='name'><label for='orderedBy'><warehouse:message code="order.orderedBy.label"/>:</label></td>
+								<td valign='top'
+									class='value ${hasErrors(bean:order,field:'orderedBy','errors')}'>
+									<div class="col-lg-4">
+									<g:select class="form-control" class="form-control" name="orderedBy.id" from="${com.cimbidia.wm.core.Person.list().sort{it.lastName}}" optionKey="id" value="${order?.orderedBy?.id}" noSelection="['':'']"/>
+									</div>	
+								</td>
+							</tr>
+							<tr class='prop'>
+								<td valign='top' class='name'><label for='dateOrdered'><warehouse:message code="order.orderedOn.label"/>:</label></td>
+								<td valign='top'
+									class='value ${hasErrors(bean:order,field:'dateOrdered','errors')}'>								
+									<div class="col-lg-4">
+									<g:jqueryDatePicker 
+										class="form-control" 
+										id="dateOrdered" 
+										name="dateOrdered" 
+										value="${order?.dateOrdered }" 
+										format="MM/dd/yyyy"
+										size="8"
+										showTrigger="false" />
+									</div>
+								</td>
+							</tr>							
+							<tr class='prop'>
+								<td valign='top' class='name'><label for='shipmentType'><warehouse:message code="order.shipmentType.label"/>:</label></td>
+								<td valign='top'
+									class='value ${hasErrors(bean:order,field:'shipmentType','errors')}'>								
+									<div class="col-lg-4">
+									<g:select name="shipmentType.id" from="${com.cimbidia.wm.shipment.ShipmentType.list()}" 
+										class="form-control" optionKey="id" optionValue="${{format.metadata(obj:it)}}" value="${orderCommand?.shipmentType?.id }" noSelection="['':'']" />
+									</div>
+								</td>
+							</tr>
+							</div>
+						</tbody>
+					</table>
+					<div class="controls" style="left-padding: 40px; border-top: 1px solid lightgrey;">
+						<g:submitButton class="btn btn-primary" name="next" value="${warehouse.message(code:'order.addItems.label')}"></g:submitButton> 
+						<g:submitButton class="btn btn-primary" name="saveonly" value="${warehouse.message(code:'order.save.label')}"></g:submitButton> 
+						<%-- 
+						<g:submitButton name="finish" value="Save & Exit"></g:submitButton> 
+						--%>
+						<g:link action="purchaseOrder" event="cancel"><warehouse:message code="default.button.cancel.label"/></g:link>
+					</div>
+					
+					
+				</fieldset>
+			</div>
+		</g:form>
+	</div>
+	<g:comboBox />	
+</body>
+</div>
+</html>

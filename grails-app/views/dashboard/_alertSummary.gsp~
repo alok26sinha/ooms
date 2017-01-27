@@ -1,0 +1,180 @@
+
+<div class="boostrap">
+<div class="panel panel-primary">
+	
+	<div class="panel-heading panel-primary">		
+		<h5><warehouse:message code="inventory.alerts.label" default="Alerts"/></h5>
+	</div>	    			
+	<div class="widget-content" style="padding:0; margin:0">	    					    			
+		<div id="alertSummary">	
+
+    		<table class="zebra">
+    			<tbody>
+                    <tr>
+				<div style=" border: 2px solid #ccc;
+					    border-radius: 6px;
+					    display: inline-block;
+					    padding: 10px;
+					    margin: 10px;
+					    width: 90%">
+				    <span class='fa fa-warning' style="color: red"></span>
+				    <span id="text" style="font-size: 1.4em;">
+				    	<g:link controller="shipment" action="list">
+				    	<warehouse:message code="shipment.delayed.label" default="Shipments Delayed"/>
+                                	</g:link>
+                                    </span>
+				    <span id="text" style="                
+					    float: right
+				    		display:inline-block;
+					    margin: 10px;
+					    border-radius: 60px;    
+					    background-color:black;
+					    color:white;
+					    font-size: 1.8em;
+					    padding: 10px 20px;">2
+			             </span>
+				</div>
+
+		    </tr>
+                    <tr>
+				<div style=" border: 2px solid #ccc;
+					    border-radius: 6px;
+					    display: inline-block;
+					    padding: 10px;
+					    margin: 10px;
+					    width: 90%">
+				    <span class='fa fa-warning' style="color: red"></span>
+				    <span id="text" style="font-size: 1.4em;">
+				    	<g:link controller="shipment" action="list">
+				    	<warehouse:message code="shipment.delayed.label" default="Orders with new messages"/>
+                                	</g:link>
+                                    </span>
+				    <span id="text" style="                
+					    display:inline-block;
+					    margin: 10px;
+					    border-radius: 60px;    
+					    background-color:black;
+					    color:white;
+					    font-size: 1.8em;
+					    padding: 10px 20px;">2
+			             </span>
+				</div>
+
+		    </tr>
+
+                    <tr>
+                        <td class="center" style="width: 1%">
+                            <img src="${createLinkTo(dir:'images/icons/silk/exclamation.png')}" class="middle"/>
+                        </td>
+                        <td>
+                            <g:link controller="shipment" action="list">
+                                <warehouse:message code="shipment.delayed.label" default="Orders waiting to be approved"/>
+                            </g:link>
+                        </td>
+                        <td class="right">
+                        		3
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="center" style="width: 1%">
+                            <img src="${createLinkTo(dir:'images/icons/silk/exclamation.png')}" class="middle"/>
+                        </td>
+                        <td>
+                            <g:link controller="shipment" action="list">
+                                <warehouse:message code="shipment.delayed.label" default="Orders with new messages"/>
+                            </g:link>
+                        </td>
+                        <td class="right">
+                        	2
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="center" style="width: 1%">
+                            <img src="${createLinkTo(dir:'images/icons/silk/exclamation.png')}" class="middle"/>
+                        </td>
+                        <td>
+                            <g:link controller="shipment" action="list">
+                                <warehouse:message code="shipment.delayed.label" default="Shipments with new messages"/>
+                            </g:link>
+                        </td>
+                        <td class="right">
+                        	0
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="center" style="width: 1%">
+                            <img src="${createLinkTo(dir:'images/icons/silk/exclamation.png')}" class="middle"/>
+                        </td>
+                        <td>
+                            <g:link controller="inventory" action="listOutOfStock">
+                                <warehouse:message code="inventory.listOutOfStock.label" default="Items that have stocked out"/>
+                            </g:link>
+                        </td>
+                        <td class="right">
+                            <div id="outOfStockCount"><img class="spinner" src="${createLinkTo(dir:'images/spinner.gif')}" class="middle"/></div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="center" style="width: 1%">
+                            <img src="${createLinkTo(dir:'images/icons/silk/error.png')}" class="middle"/>
+                        </td>
+                        <td>
+                            <g:link controller="inventory" action="listLowStock">
+                                <warehouse:message code="inventory.listLowStock.label" default="Items that are below minimum level"/>
+                            </g:link>
+                        </td>
+                        <td class="right">
+                            <div id="lowStockCount"><img class="spinner" src="${createLinkTo(dir:'images/spinner.gif')}" class="middle"/></div>
+                        </td>
+                    </tr>
+
+					<tr>
+						<td class="center" style="width: 1%">
+                            <img src="${createLinkTo(dir:'images/icons/silk/creditcards.png')}" class="middle"/>
+						</td>
+						<td>
+                            <g:link controller="inventory" action="listReorderStock">
+                                <warehouse:message code="inventory.listReorderStock.label" default="Items that are below reorder level"/>
+							</g:link>
+						</td>
+						<td class="right">
+							<div id="reorderStockCount"><img class="spinner" src="${createLinkTo(dir:'images/spinner.gif')}" class="middle"/></div>
+						</td>
+					</tr>
+                    <tr>
+                        <td class="center" style="width: 1%">
+                            <img src="${createLinkTo(dir:'images/icons/silk/package.png')}" class="middle"/>
+                        </td>
+                        <td>
+                            <g:link controller="inventory" action="listOverStock">
+                                <warehouse:message code="inventory.listOverStock.label" default="Items that are over stocked"/>
+                            </g:link>
+                        </td>
+                        <td class="right">
+                            <div id="overStockCount"><img class="spinner" src="${createLinkTo(dir:'images/spinner.gif')}" class="middle"/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="center" style="width: 1%">
+                            <img src="${createLinkTo(dir:'images/icons/silk/box.png')}" class="middle"/>
+                        </td>
+                        <td>
+                            <g:link controller="inventory" action="listQuantityOnHandZero">
+                                <warehouse:message code="inventory.listQuantityOnHandZero.label" default="Items that have QoH equal to zero"/>
+                            </g:link>
+                        </td>
+                        <td class="right">
+                            <div id="onHandQuantityZeroCount"><img class="spinner" src="${createLinkTo(dir:'images/spinner.gif')}" class="middle"/></div>
+
+                        </td>
+                    </tr>
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+</div>
+
